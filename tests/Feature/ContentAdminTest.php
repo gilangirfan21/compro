@@ -30,8 +30,19 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     Filament::setCurrentPanel('admin');
 
+    $permissions = ['View:ManageSettings'];
+
+    foreach (['Service', 'Portfolio', 'Post', 'Message'] as $model) {
+        foreach (['ViewAny', 'View', 'Create', 'Update', 'Delete', 'DeleteAny', 'Reorder'] as $ability) {
+            $permissions[] = "{$ability}:{$model}";
+        }
+    }
+
     $user = User::factory()->create();
-    $user->givePermissionTo(Permission::create(['name' => 'View:ManageSettings', 'guard_name' => 'web']));
+    $user->givePermissionTo(array_map(
+        fn (string $name): Permission => Permission::create(['name' => $name, 'guard_name' => 'web']),
+        $permissions,
+    ));
 
     $this->actingAs($user);
 });
