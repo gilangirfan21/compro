@@ -18,7 +18,17 @@ class MessageFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'email' => fake()->safeEmail(),
+            'phone' => fake()->optional()->numerify('08##########'),
+            'subject' => rtrim(fake()->sentence(fake()->numberBetween(3, 6)), '.'),
+            'message' => fake()->paragraphs(fake()->numberBetween(1, 3), true),
+            'is_read' => false,
         ];
+    }
+
+    public function read(): static
+    {
+        return $this->state(fn (array $attributes) => ['is_read' => true]);
     }
 }

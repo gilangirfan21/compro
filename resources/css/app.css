@@ -7,3 +7,94 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@utility container-page {
+    margin-inline: auto;
+    width: 100%;
+    max-width: var(--container-6xl);
+    padding-inline: --spacing(4);
+
+    @variant sm {
+        padding-inline: --spacing(6);
+    }
+
+    @variant lg {
+        padding-inline: --spacing(8);
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center gap-2 rounded-md bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500;
+    }
+
+    .btn-secondary {
+        @apply inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50;
+    }
+
+    .form-input {
+        @apply block w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 focus:outline-none;
+    }
+
+    /* Typography for rich editor output (no typography plugin installed). */
+    .rich-content {
+        @apply text-base leading-relaxed text-slate-700;
+
+        & > * + * {
+            @apply mt-5;
+        }
+
+        & h1, & h2, & h3, & h4 {
+            @apply mt-8 font-semibold text-slate-900;
+        }
+
+        & h1 { @apply text-3xl; }
+        & h2 { @apply text-2xl; }
+        & h3 { @apply text-xl; }
+        & h4 { @apply text-lg; }
+
+        & a {
+            @apply font-medium text-amber-700 underline underline-offset-2 hover:text-amber-600;
+        }
+
+        & ul {
+            @apply list-disc space-y-1 pl-6;
+        }
+
+        & ol {
+            @apply list-decimal space-y-1 pl-6;
+        }
+
+        & blockquote {
+            @apply border-l-4 border-amber-400 pl-4 text-slate-600 italic;
+        }
+
+        & img {
+            @apply h-auto max-w-full rounded-lg;
+        }
+
+        & pre {
+            @apply overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100;
+        }
+
+        & code {
+            @apply rounded bg-slate-100 px-1 py-0.5 text-sm;
+        }
+
+        & pre code {
+            @apply bg-transparent p-0;
+        }
+
+        & hr {
+            @apply border-slate-200;
+        }
+
+        & table {
+            @apply w-full border-collapse text-sm;
+        }
+
+        & th, & td {
+            @apply border border-slate-200 px-3 py-2 text-left;
+        }
+    }
+}

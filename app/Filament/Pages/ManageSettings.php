@@ -45,16 +45,6 @@ class ManageSettings extends Page
      */
     public ?array $data = [];
 
-    public const SOCIAL_PLATFORMS = [
-        'facebook' => 'Facebook',
-        'instagram' => 'Instagram',
-        'x' => 'X (Twitter)',
-        'linkedin' => 'LinkedIn',
-        'youtube' => 'YouTube',
-        'tiktok' => 'TikTok',
-        'whatsapp' => 'WhatsApp',
-    ];
-
     public function mount(): void
     {
         $this->form->fill(Setting::current()->attributesToArray());
@@ -125,7 +115,7 @@ class ManageSettings extends Page
                             ->addActionLabel('Tambah link')
                             ->schema([
                                 Select::make('platform')
-                                    ->options(self::SOCIAL_PLATFORMS)
+                                    ->options(Setting::SOCIAL_PLATFORMS)
                                     ->required()
                                     ->native(false),
                                 TextInput::make('url')
