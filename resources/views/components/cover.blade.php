@@ -1,9 +1,9 @@
 {{-- Image with a neutral placeholder when no file has been uploaded. --}}
-@props(['src' => null, 'alt' => '', 'aspect' => 'aspect-[16/10]'])
+@props(['src' => null, 'alt' => '', 'aspect' => 'aspect-[16/10]', 'eager' => false])
 
 <div {{ $attributes->class(['relative overflow-hidden bg-slate-100', $aspect]) }}>
     @if ($src)
-        <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" class="absolute inset-0 size-full object-cover">
+        <img src="{{ $src }}" alt="{{ $alt }}" @if ($eager) fetchpriority="high" @else loading="lazy" @endif decoding="async" class="absolute inset-0 size-full object-cover">
     @else
         <div class="absolute inset-0 grid place-items-center bg-gradient-to-br from-slate-100 to-slate-200" aria-hidden="true">
             <svg class="size-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

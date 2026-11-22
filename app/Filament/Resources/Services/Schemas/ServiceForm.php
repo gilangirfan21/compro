@@ -34,6 +34,10 @@ class ServiceForm
                             ->imageEditor()
                             ->disk('public')
                             ->directory('services')
+                            ->automaticallyResizeImagesMode('contain')
+                            ->automaticallyResizeImagesToWidth('800')
+                            ->automaticallyResizeImagesToHeight('800')
+                            ->automaticallyUpscaleImagesWhenResizing(false)
                             ->visibility('public')
                             ->maxSize(2048),
                         TextInput::make('sort_order')

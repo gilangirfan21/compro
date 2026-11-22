@@ -36,6 +36,10 @@ class PortfolioForm
                             ->imageEditor()
                             ->disk('public')
                             ->directory('portfolios')
+                            ->automaticallyResizeImagesMode('contain')
+                            ->automaticallyResizeImagesToWidth('1920')
+                            ->automaticallyResizeImagesToHeight('1920')
+                            ->automaticallyUpscaleImagesWhenResizing(false)
                             ->visibility('public')
                             ->maxSize(4096),
                         TextInput::make('category')

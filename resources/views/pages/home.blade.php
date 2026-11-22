@@ -1,4 +1,19 @@
 <x-layouts.app>
+    @push('head')
+        <x-json-ld :data="[
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => $setting->company_name ?: config('app.name'),
+            'url' => route('home'),
+            'logo' => $setting->logo_url,
+            'description' => $setting->tagline,
+            'email' => $setting->email,
+            'telephone' => $setting->phone,
+            'address' => $setting->address,
+            'sameAs' => collect($setting->social_links)->pluck('url')->filter()->values()->all(),
+        ]" />
+    @endpush
+
     {{-- Hero --}}
     <section class="relative overflow-hidden bg-slate-900">
         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(251,191,36,0.18),transparent_60%)]" aria-hidden="true"></div>

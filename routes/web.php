@@ -4,7 +4,11 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SeoController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/tentang', [PageController::class, 'about'])->name('about');

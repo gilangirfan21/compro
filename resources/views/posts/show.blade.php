@@ -1,4 +1,22 @@
-<x-layouts.app :title="$post->title" :description="$post->excerpt">
+<x-layouts.app :title="$post->title" :description="$post->excerpt" :image="$post->thumbnail_url" type="article">
+    @push('head')
+        <x-json-ld :data="[
+            '@context' => 'https://schema.org',
+            '@type' => 'Article',
+            'headline' => $post->title,
+            'description' => $post->excerpt,
+            'image' => $post->thumbnail_url,
+            'datePublished' => $post->published_at->toIso8601String(),
+            'dateModified' => $post->updated_at?->toIso8601String(),
+            'mainEntityOfPage' => route('posts.show', $post),
+            'publisher' => array_filter([
+                '@type' => 'Organization',
+                'name' => $setting->company_name ?: config('app.name'),
+                'logo' => $setting->logo_url,
+            ]),
+        ]" />
+    @endpush
+
     <article>
         <header class="border-b border-slate-200 bg-slate-50">
             <div class="container-page max-w-3xl py-12 sm:py-16">
@@ -12,7 +30,7 @@
 
         <div class="container-page max-w-3xl py-12">
             @if ($post->thumbnail_url)
-                <x-cover :src="$post->thumbnail_url" :alt="$post->title" class="mb-10 rounded-xl" />
+                <x-cover :src="$post->thumbnail_url" :alt="$post->title" eager class="mb-10 rounded-xl" />
             @endif
 
             <div class="rich-content">

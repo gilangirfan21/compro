@@ -1,4 +1,4 @@
-<x-layouts.app :title="$portfolio->title" :description="\Illuminate\Support\Str::limit((string) $portfolio->description, 160)">
+<x-layouts.app :title="$portfolio->title" :description="\Illuminate\Support\Str::limit((string) $portfolio->description, 160)" :image="$portfolio->image_url">
     <x-page-header :title="$portfolio->title">
         <x-slot:breadcrumb>
             <a href="{{ route('portfolios.index') }}" class="hover:text-slate-800">Portofolio</a>
@@ -18,7 +18,7 @@
     <section class="py-12">
         <div class="container-page max-w-4xl">
             @if ($portfolio->image_url)
-                <x-cover :src="$portfolio->image_url" :alt="$portfolio->title" class="rounded-xl" />
+                <x-cover :src="$portfolio->image_url" :alt="$portfolio->title" eager class="rounded-xl" />
             @endif
 
             @if ($portfolio->description)

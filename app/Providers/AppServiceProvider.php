@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
             ];
         });
 
-        View::composer(['components.layouts.app', 'pages.*'], function ($view): void {
+        View::composer(['components.layouts.app', 'pages.*', 'posts.*', 'portfolios.*'], function ($view): void {
             $view->with('setting', Setting::cached());
         });
     }

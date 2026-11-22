@@ -1,9 +1,17 @@
-@props(['title' => null, 'description' => null])
+@props(['title' => null, 'description' => null, 'image' => null, 'type' => 'website', 'noindex' => false])
 
 @php
     $siteName = $setting->company_name ?: config('app.name');
     $pageTitle = $title ? "{$title} - {$siteName}" : ($setting->tagline ? "{$siteName} - {$setting->tagline}" : $siteName);
     $metaDescription = $description ?: ($setting->tagline ?: \Illuminate\Support\Str::limit((string) $setting->about, 160));
+    $metaImage = $image ?: $setting->logo_url;
+
+    // Canonical URL keeps only the query params that change page content.
+    $canonicalQuery = collect(request()->query())
+        ->only(['kategori', 'page'])
+        ->reject(fn ($value, $key) => $key === 'page' && (int) $value <= 1)
+        ->filter(fn ($value) => is_string($value) && $value !== '');
+    $canonical = url()->current().($canonicalQuery->isNotEmpty() ? '?'.http_build_query($canonicalQuery->all()) : '');
 
     $navigation = [
         ['label' => 'Beranda', 'route' => 'home', 'active' => 'home'],
@@ -24,14 +32,40 @@
         @if ($metaDescription)
             <meta name="description" content="{{ $metaDescription }}">
         @endif
+        @if ($noindex)
+            <meta name="robots" content="noindex, follow">
+        @else
+            <link rel="canonical" href="{{ $canonical }}">
+        @endif
+
+        <meta property="og:type" content="{{ $type }}">
         <meta property="og:title" content="{{ $pageTitle }}">
         <meta property="og:site_name" content="{{ $siteName }}">
+        <meta property="og:url" content="{{ $canonical }}">
+        <meta property="og:locale" content="id_ID">
+        @if ($metaDescription)
+            <meta property="og:description" content="{{ $metaDescription }}">
+        @endif
+        @if ($metaImage)
+            <meta property="og:image" content="{{ $metaImage }}">
+        @endif
+        <meta name="twitter:card" content="{{ $metaImage ? 'summary_large_image' : 'summary' }}">
+        <meta name="twitter:title" content="{{ $pageTitle }}">
+        @if ($metaDescription)
+            <meta name="twitter:description" content="{{ $metaDescription }}">
+        @endif
+        @if ($metaImage)
+            <meta name="twitter:image" content="{{ $metaImage }}">
+        @endif
+
         @if ($setting->logo_url)
             <link rel="icon" href="{{ $setting->logo_url }}">
         @endif
 
         @fonts
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        @stack('head')
     </head>
     <body class="flex min-h-screen flex-col bg-white font-sans text-slate-700 antialiased">
         <header class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur">

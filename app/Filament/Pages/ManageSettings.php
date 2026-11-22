@@ -72,6 +72,10 @@ class ManageSettings extends Page
                             ->imageEditor()
                             ->disk('public')
                             ->directory('settings')
+                            ->automaticallyResizeImagesMode('contain')
+                            ->automaticallyResizeImagesToWidth('512')
+                            ->automaticallyResizeImagesToHeight('512')
+                            ->automaticallyUpscaleImagesWhenResizing(false)
                             ->visibility('public')
                             ->maxSize(2048),
                     ]),
@@ -103,7 +107,8 @@ class ManageSettings extends Page
                             ->maxLength(50),
                         TextInput::make('email')
                             ->email()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->helperText('Pesan dari form kontak juga dikirim ke email ini.'),
                     ]),
                 Section::make('Media Sosial')
                     ->columnSpan(1)
