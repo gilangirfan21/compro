@@ -11,6 +11,7 @@ use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 use function Livewire\invade;
 
@@ -97,4 +98,21 @@ it('counts messages per month for the chart', function () {
         ->toHaveCount(12)
         ->and(array_sum($data['datasets'][0]['data']))->toBe(3)
         ->and(array_slice($data['datasets'][0]['data'], -2))->toBe([1, 2]);
+});
+
+it('renders the admin dashboard with every widget', function () {
+    actingAsDashboardUser(['ViewAny:Message', 'ViewAny:Post', 'ViewAny:Portfolio', 'ViewAny:Service'])
+        ->assignRole(Role::findOrCreate('editor', 'web'));
+
+    $this->get(Filament::getPanel('admin')->getUrl())
+        ->assertOk()
+        ->assertSeeLivewire(ContentStatsOverview::class)
+        ->assertSeeLivewire(MessagesChart::class)
+        ->assertSeeLivewire(LatestMessages::class);
+});
+
+it('blocks users without a role from the admin panel', function () {
+    actingAsDashboardUser(['ViewAny:Message']);
+
+    $this->get(Filament::getPanel('admin')->getUrl())->assertForbidden();
 });
